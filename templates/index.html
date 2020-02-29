@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        #refreshButton {
+            cursor: pointer;
+            color: rgb(0, 0, 167);
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            let input = document.querySelector("input");
+            navigator.clipboard.readText().then(text => input.value = text)
+
+            document.querySelector("form").onsubmit = function() {
+                const request = new XMLHttpRequest();
+                
+                if (input.value) {
+                    request.open("POST", "/api");
+                    request.onload = () => {
+                        const data = JSON.parse(request.responseText);
+                        if (data.status) {
+                            document.querySelector("#querResult").innerHTML = "";
+                            let email = document.createElement("p");
+                            email.innerText = `Email: ${data.email}`;
+                            let message = document.createElement("p");
+                            message.innerText = `Message: ${data.message}`;
+                            let id = document.createElement("p");
+                            id.innerText = `ID: ${data.id}`;
+                            document.querySelector("#querResult").append(id)
+                            document.querySelector("#querResult").append(email)
+                            document.querySelector("#querResult").append(message)
+                        }
+                        else {
+                            document.querySelector("#querResult").innerHTML = "";
+                            let error = document.createElement("span");
+                            error.innerText = `ID ${data.id} not found`;
+                            document.querySelector("#querResult").append(error)
+                        }
+
+                    }
+                    const data = new FormData();
+                    data.append("id", input.value);
+                    request.send(data);
+                    return false;
+                }
+                return false;
+            }
+            document.querySelector("#refreshButton").addEventListener("click", function() {
+                location.reload();
+            })           
+        })
+    </script>
+
+    <title>Search Query</title>
+  </head>
+  <body>
+    <div class="card text-center">
+        <div class="card-header">
+            Search Query
+        </div>
+        <div class="card-body">
+            <form>
+                <div id="refreshButton">Refresh</div>
+                <input type="text" placeholder="Enter Query ID" disabled>
+              
+                <button type="submit" class="btn btn-primary mb-2">Search</button>
+                <div id="querResult">
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+
+  </body>
+</html>
