@@ -14,32 +14,10 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            let refresh;
-            if(localStorage.getItem("refresh")) {
-                refresh = localStorage.getItem("refresh");
-            }
-            else {
-                refresh = "false"
-            }
-
-            function decide() {
-                if (refresh === "false") {
-                    localStorage.setItem("refresh", "true");
-                    query();
-                }
-                else {
-                    localStorage.setItem("refresh", "false");
-                    query();              
-                }
-            }
-
-            function action() {
-                decide();
-            }
 
             let input = document.querySelector("input");
             navigator.clipboard.readText().then(text => input.value = text)
-            .then(action)
+            .then(query)
 
             function query() {
                 if (input.value) {
@@ -74,7 +52,7 @@
             }
 
             document.querySelector("button").onclick = function() {
-                decide(); 
+                location.reload();
             }  
      
         })
