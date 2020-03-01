@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" />
     <style>
         #refreshButton {
             cursor: pointer;
@@ -14,14 +14,36 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            let refresh;
+            if(localStorage.getItem("refresh")) {
+                refresh = localStorage.getItem("refresh");
+            }
+            else {
+                refresh = "false"
+            }
+
+            function decide() {
+                if (refresh === "false") {
+                    localStorage.setItem("refresh", "true");
+                    query();
+                }
+                else {
+                    localStorage.setItem("refresh", "false");
+                    query();              
+                }
+            }
+
+            function action() {
+                decide();
+            }
 
             let input = document.querySelector("input");
             navigator.clipboard.readText().then(text => input.value = text)
+            .then(action)
 
-            document.querySelector("form").onsubmit = function() {
-                const request = new XMLHttpRequest();
-                
+            function query() {
                 if (input.value) {
+                    const request = new XMLHttpRequest();
                     request.open("POST", "/api");
                     request.onload = () => {
                         const data = JSON.parse(request.responseText);
@@ -48,29 +70,28 @@
                     const data = new FormData();
                     data.append("id", input.value);
                     request.send(data);
-                    return false;
                 }
-                return false;
             }
-            document.querySelector("#refreshButton").addEventListener("click", function() {
-                location.reload();
-            })           
+
+            document.querySelector("button").onclick = function() {
+                decide(); 
+            }  
+     
         })
     </script>
 
-    <title>Search Query</title>
+    <title>Search Query/Order</title>
   </head>
   <body>
     <div class="card text-center">
         <div class="card-header">
-            Search Query
+            Search Query/Order
         </div>
         <div class="card-body">
             <form>
-                <div id="refreshButton">Refresh</div>
                 <input type="text" placeholder="Enter Query ID" disabled>
               
-                <button type="submit" class="btn btn-primary mb-2">Search</button>
+                <button type="submit" class="btn btn-primary mb-2">Refresh Clipboard and Search</button>
                 <div id="querResult">
                     
                 </div>
