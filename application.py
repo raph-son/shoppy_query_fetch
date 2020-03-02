@@ -45,12 +45,12 @@ def api():
         result = fetch_query.connect(search_string)
         return jsonify(result)
     if search_string_type == "BY ORDER EMAIL":
-        product_by_email_id = OrderByEmailOrID()
-        result = product_by_email_id.email(search_string)
+        order_by_email_id = OrderByEmailOrID()
+        result = order_by_email_id.email(search_string)
         return jsonify(result)
     if search_string_type == "BY ORDER ID":
-        product_by_email_id = OrderByEmailOrID()
-        result = product_by_email_id.id(search_string)
+        order_by_email_id = OrderByEmailOrID()
+        result = order_by_email_id.id(search_string)
         return jsonify(result)
 
 if __name__ == "__main__":

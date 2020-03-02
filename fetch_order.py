@@ -38,13 +38,22 @@ class OrderByEmailOrID:
 
         for value in result:
             if value["email"] == email:
+                coupon_raw = value["coupon"]
+                coupon = ""
+                if len(coupon_raw) == 0:
+                    coupon += "No coupon"
+                else:
+                    for value in coupon_raw:
+                        coupon += f"{value} "
                 result_extracted = {
                     "id": value["id"],
                     "price": f"{value['currency']} {value['price']}",
                     "country": value["agent"]["geo"]["country"],
                     "ip": value["agent"]["geo"]["ip"],
+                    "coupon": coupon,
                     "quantity": value["quantity"],
                     "product": value["product"]["title"],
+                    "gateway": value["gateway"],
                     "created_at": value["created_at"]
                 }
                 return_list.append(result_extracted)
@@ -79,6 +88,13 @@ class OrderByEmailOrID:
 
         for value in result:
             if value["id"] == id:
+                coupon_raw = value["coupon"]
+                coupon = ""
+                if len(coupon_raw) == 0:
+                    coupon += "No coupon"
+                else:
+                    for value in coupon_raw:
+                        coupon += f"{value} "
                 result_extracted = {
                     "status": True,
                     "type": "ORDER ID",
@@ -87,8 +103,10 @@ class OrderByEmailOrID:
                         "price": f"{value['currency']} {value['price']}",
                         "country": value["agent"]["geo"]["country"],
                         "ip": value["agent"]["geo"]["ip"],
+                        "coupon": coupon,
                         "quantity": value["quantity"],
                         "product": value["product"]["title"],
+                        "gateway": value["gateway"],
                         "created_at": value["created_at"]
                     }
                 }
@@ -104,7 +122,7 @@ class OrderByEmailOrID:
 
 def main():
     order_by_email_id = OrderByEmailOrID()
-    result = order_by_email_id.id("93c39394-6531-4349-8f44-50d832447e02")
+    result = order_by_email_id.id("e52c824b-604a-4c6d-b566-0246d6acb843")
     # result = order_by_email_id.email("jon.80110@gmail.com")
     print(result)
     
