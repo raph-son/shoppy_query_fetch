@@ -1,11 +1,13 @@
 """
-Fetch customer email from query
+Fetch customer query
 """
 import json
 
 import requests
 
-class EmailFromQuery:
+from requests.exceptions import ConnectionError
+
+class FetchQuery:
     def __init__(self):
         self._API_KEY = "rjJs9xF6YjDDmaGrGIQWGCHKcVDaV7GejhCjIqPuuDv2MS0fAW"    # Shoppy API key
 
@@ -20,7 +22,14 @@ class EmailFromQuery:
             "Authorization": self._API_KEY
         }
         url = "https://shoppy.gg/api/v1/queries/"
-        req = requests.get(url, headers=headers)
+        try:
+            req = requests.get(url, headers=headers)
+        except ConnectionError:
+            result = {
+                "status": False,
+                "message": "<span style='color: red;'>Connection Error</span>"
+            }
+            return result
 
         result = json.loads(req.text)
 
@@ -28,6 +37,7 @@ class EmailFromQuery:
             if queries['id'] == id:
                 result = {
                     "status": True,
+                    "type": "QUERY ID",
                     "id": queries['id'],
                     "email": queries['email'],
                     "message": queries["message"]
@@ -36,13 +46,13 @@ class EmailFromQuery:
         # If id isn't found
         result = {
             "status": False,
-            "id": id
+            "message": f"query ID <span style='color: red;'>{id}</span> not found"
         }
         return result
 
 def main():
-    email_from_query = EmailFromQuery()
-    email_from_query.connect("vdYfTkp")
+    fetch_query = FetchQuery()
+    fetch_query.connect("vdYfTkp")
 
 if __name__ == "__main__":
     main()
