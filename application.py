@@ -2,7 +2,7 @@ import re
 
 from flask import Flask, render_template, request, jsonify
 from fetch_query import FetchQuery
-from fetch_order import ProductByEmailOrID
+from fetch_order import OrderByEmailOrID
 
 app = Flask(__name__)
 
@@ -45,11 +45,11 @@ def api():
         result = fetch_query.connect(search_string)
         return jsonify(result)
     if search_string_type == "BY ORDER EMAIL":
-        product_by_email_id = ProductByEmailOrID()
+        product_by_email_id = OrderByEmailOrID()
         result = product_by_email_id.email(search_string)
         return jsonify(result)
     if search_string_type == "BY ORDER ID":
-        product_by_email_id = ProductByEmailOrID()
+        product_by_email_id = OrderByEmailOrID()
         result = product_by_email_id.id(search_string)
         return jsonify(result)
 

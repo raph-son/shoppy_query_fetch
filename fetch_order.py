@@ -7,7 +7,7 @@ import requests
 
 from requests.exceptions import ConnectionError
 
-class ProductByEmailOrID:
+class OrderByEmailOrID:
     def __init__(self):
         self._URL = "https://shoppy.gg/api/v1/orders/"
         self._API_KEY = "rjJs9xF6YjDDmaGrGIQWGCHKcVDaV7GejhCjIqPuuDv2MS0fAW"    # Shoppy API key
@@ -103,9 +103,9 @@ class ProductByEmailOrID:
 
 
 def main():
-    product_by_email_id = ProductByEmailOrID()
-    result = product_by_email_id.id("93c39394-6531-4349-8f44-50d832447e02")
-    # result = product_by_email_id.email("jon.80110@gmail.com")
+    order_by_email_id = OrderByEmailOrID()
+    result = order_by_email_id.id("93c39394-6531-4349-8f44-50d832447e02")
+    # result = order_by_email_id.email("jon.80110@gmail.com")
     print(result)
     
 
