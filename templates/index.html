@@ -10,6 +10,10 @@
             cursor: pointer;
             color: rgb(0, 0, 167);
         }
+
+        p {
+            margin: 0px;
+        }
     </style>
 
     <script>
@@ -26,27 +30,56 @@
                     request.onload = () => {
                         const data = JSON.parse(request.responseText);
                         if (data.status) {
-                            document.querySelector("#querResult").innerHTML = "";
-                            let email = document.createElement("p");
-                            email.innerText = `Email: ${data.email}`;
-                            let message = document.createElement("p");
-                            message.innerText = `Message: ${data.message}`;
-                            let id = document.createElement("p");
-                            id.innerText = `ID: ${data.id}`;
-                            document.querySelector("#querResult").append(id)
-                            document.querySelector("#querResult").append(email)
-                            document.querySelector("#querResult").append(message)
+                            if (data.type === "QUERY ID") {
+                                document.querySelector("#querResult").innerHTML = "";
+                                let email = document.createElement("p");
+                                email.innerHTML = `Email: <span class="text-success">${data.email}</span>`;
+                                let message = document.createElement("p");
+                                message.innerHTML = `Message: <span class="text-info">${data.message}</span>`;
+                                let id = document.createElement("p");
+                                id.innerHTML = `ID: <span class="text-primary">${data.id}</span>`;
+                                document.querySelector("#querResult").append(id)
+                                document.querySelector("#querResult").append(email)
+                                document.querySelector("#querResult").append(message)
+                            }
+                            if (data.type === "ORDER EMAIL") {
+                                document.querySelector("#querResult").innerHTML = "";
+                                html_result = "";
+                                for (const value of data.result) {
+                                    html_result += `<p>ID: <span class="text-success">${value.id}</span></p>`;
+                                    html_result += `<p>Price: ${value.price}</p>`;
+                                    html_result += `<p>Country: ${value.country}</p>`;
+                                    html_result += `<p>IP: ${value.ip}</p>`;
+                                    html_result += `<p>Quantity: ${value.quantity}</p>`;
+                                    html_result += `<p>Product: ${value.product}</p>`;
+                                    html_result += `<p>Created At: ${value.created_at}</p>`
+                                    html_result += "<hr>";
+                                    document.querySelector("#querResult").innerHTML = html_result;
+                                }
+                            }
+                            if (data.type === "ORDER ID") {
+                                document.querySelector("#querResult").innerHTML = "";
+                                html_result = `<p>Email: <span class="text-success">${data.result.email}</span></p>`;
+                                html_result += `<p>Price: ${data.result.price}</p>`;
+                                html_result += `<p>Country: ${data.result.country}</p>`;
+                                html_result += `<p>IP: ${data.result.ip}</p>`;
+                                html_result += `<p>Quantity: ${data.result.quantity}</p>`;
+                                html_result += `<p>Product: ${data.result.product}</p>`;
+                                html_result += `<p>Created At: ${data.result.created_at}</p>`
+                                document.querySelector("#querResult").innerHTML = html_result;
+                            }
+                            
                         }
                         else {
                             document.querySelector("#querResult").innerHTML = "";
                             let error = document.createElement("span");
-                            error.innerText = `ID ${data.id} not found`;
+                            error.innerHTML = data.message;
                             document.querySelector("#querResult").append(error)
                         }
 
                     }
                     const data = new FormData();
-                    data.append("id", input.value);
+                    data.append("search", input.value);
                     request.send(data);
                 }
             }
@@ -71,9 +104,7 @@
                 <input type="text" placeholder="Enter Query ID" disabled>
               
                 <button type="submit" class="btn btn-primary mb-2">Refresh Clipboard and Search</button>
-                <div id="querResult">
-                    
-                </div>
+                <div id="querResult"></div>
             </form>
         </div>
     </div>
