@@ -9,7 +9,7 @@ from requests.exceptions import ConnectionError
 
 class FetchQuery:
     def __init__(self):
-        self._API_KEY = "rjJs9xF6YjDDmaGrGIQWGCHKcVDaV7GejhCjIqPuuDv2MS0fAW"    # Shoppy API key
+        self._API_KEY = ""    # Shoppy API key
 
     def connect(self, id):
         """

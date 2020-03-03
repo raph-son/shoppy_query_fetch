@@ -10,7 +10,7 @@ from requests.exceptions import ConnectionError
 class OrderByEmailOrID:
     def __init__(self):
         self._URL = "https://shoppy.gg/api/v1/orders/"
-        self._API_KEY = "rjJs9xF6YjDDmaGrGIQWGCHKcVDaV7GejhCjIqPuuDv2MS0fAW"    # Shoppy API key
+        self._API_KEY = ""    # Shoppy API key
         self._HEADERS = {
             "User-Agent": "QueryFetch",
             "Authorization": self._API_KEY
@@ -123,7 +123,7 @@ class OrderByEmailOrID:
 def main():
     order_by_email_id = OrderByEmailOrID()
     result = order_by_email_id.id("e52c824b-604a-4c6d-b566-0246d6acb843")
-    # result = order_by_email_id.email("jon.80110@gmail.com")
+    # result = order_by_email_id.email("")
     print(result)
     
 
