@@ -53,6 +53,7 @@
                                     html_result += `<p>Coupon: ${value.coupon}</p>`;
                                     html_result += `<p>Quantity: ${value.quantity}</p>`;
                                     html_result += `<p>Product: ${value.product}</p>`;
+                                    html_result += `<p>Details: ${value.details}</p>`;
                                     html_result += `<p>Gateway: ${value.gateway}</p>`;
                                     html_result += `<p>Created At: ${value.created_at}</p>`
                                     html_result += "<hr>";
@@ -68,6 +69,7 @@
                                 html_result += `<p>Coupon: ${data.result.coupon}</p>`;
                                 html_result += `<p>Quantity: ${data.result.quantity}</p>`;
                                 html_result += `<p>Product: ${data.result.product}</p>`;
+                                html_result += `<p>Details: ${data.result.details}</p>`;
                                 html_result += `<p>Gateway: ${data.result.gateway}</p>`;
                                 html_result += `<p>Created At: ${data.result.created_at}</p>`
                                 document.querySelector("#querResult").innerHTML = html_result;

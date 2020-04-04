@@ -9,7 +9,7 @@ from requests.exceptions import ConnectionError
 
 class FetchQuery:
     def __init__(self):
-        self._API_KEY = ""    # Shoppy API key
+        self._API_KEY = "rjJs9xF6YjDDmaGrGIQWGCHKcVDaV7GejhCjIqPuuDv2MS0fAW"    # Shoppy API key
 
     def connect(self, id):
         """
@@ -23,26 +23,24 @@ class FetchQuery:
         }
         url = "https://shoppy.gg/api/v1/queries/"
         try:
-            req = requests.get(url, headers=headers)
+            req = requests.get(f"{url}{id}", headers=headers)
         except ConnectionError:
             result = {
                 "status": False,
                 "message": "<span style='color: red;'>Connection Error</span>"
             }
             return result
+        print(req.text)
+        queries = json.loads(req.text)
 
-        result = json.loads(req.text)
-
-        for queries in result:
-            if queries['id'] == id:
-                result = {
-                    "status": True,
-                    "type": "QUERY ID",
-                    "id": queries['id'],
-                    "email": queries['email'],
-                    "message": queries["message"]
-                }
-                return result
+        result = {
+            "status": True,
+            "type": "QUERY ID",
+            "id": queries['id'],
+            "email": queries['email'],
+            "message": queries["message"]
+        }
+        return result
         # If id isn't found
         result = {
             "status": False,
